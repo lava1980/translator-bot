@@ -2,3 +2,11 @@ venv/
 .vscode/
 *.log
 config.py
+__pycache__/
+resources/
+temp
+audio/
+tmp*.*
+529133*
+
+

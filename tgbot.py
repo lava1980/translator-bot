@@ -9,7 +9,8 @@ from telegram.ext import Updater, CallbackQueryHandler, ConversationHandler, Com
 from telegram.ext import messagequeue as mq
 
 import config
-from handlers import *
+# 
+# from handlers import *
 import utils
 
 
@@ -43,12 +44,15 @@ def main():
 
     
   
-    
-    dp.add_handler(CallbackQueryHandler(set_delay, pattern='no'))   
-    dp.add_handler(CommandHandler('start', check_if_is_subscriber))      
-    dp.add_handler(CommandHandler('now', send_resume))    
-    dp.add_handler(CallbackQueryHandler(callback_other_handler))   
-    
+    dp.add_handler(MessageHandler(Filters.voice, utils.voice_to_text))  
+    dp.add_error_handler(utils.ping_me)
+    # dp.add_handler(CallbackQueryHandler(set_delay, pattern='no'))   
+    # dp.add_handler(CommandHandler('start', check_if_is_subscriber))      
+    # dp.add_handler(CommandHandler('now', send_resume))    
+    # dp.add_handler(CallbackQueryHandler(callback_other_handler))   
+
+
+
     # webhook_domain = 'https://python-developer.ru'    
     # PORT = 5000
 
