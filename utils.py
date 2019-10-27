@@ -1,16 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-from telegram.ext import Updater
-from telegram.ext import CommandHandler
-from telegram.ext import MessageHandler
-from telegram.ext import Filters
 from telegram.ext.dispatcher import run_async
+
+# from __future__ import unicode_literals
 from telegram import ChatAction
 from tinytag import TinyTag 
 from google.cloud import speech
-from google.cloud import storage
+# from google.cloud import storage
 from google.cloud.speech import enums
+from google.cloud import translate
 from google.cloud.speech import types
 import os
 import io
@@ -55,8 +53,43 @@ def voice_to_text(update, context):
     for result in response.results:
         message_text += result.alternatives[0].transcript + '\n'
 
+    
+    message_text = transl(message_text.encode('utf-8'), 'en')
+
     update.message.reply_text(message_text)
-    os.remove(file_name)
+    os.remove(os.getcwd() + '/' + file_name)
+    
+
+
+
+
+def transl(user_text, target_lang):
+    # Instantiates a client
+    translate_client = translate.Client()
+
+    # The text to translate
+    
+    text = user_text.decode('utf-8')
+    # The target language
+    target = target_lang
+
+    # Translates some text into Russian
+    translation = translate_client.translate(
+        text,
+        target_language=target)
+
+    # print(u'Text: {}'.format(text))
+    # print(u'Translation: {}'.format(translation['translatedText']))
+    return translation['translatedText']
+
+
+
+
+
+
+
+
+
 
 
 def ping_me(update, context, error):
@@ -65,4 +98,4 @@ def ping_me(update, context, error):
 
 
 if __name__ == "__main__":
-    pass
+    transl('ru')

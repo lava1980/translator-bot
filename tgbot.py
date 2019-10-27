@@ -53,17 +53,23 @@ def main():
 
 
 
-    # webhook_domain = 'https://python-developer.ru'    
-    # PORT = 5000
+    # webhook_domain = 'https://translatebot.ru'    
+    # PORT = 8443
 
     # mybot.start_webhook(listen='127.0.0.1',
     #                 port=PORT,
     #                 url_path=config.TOKEN,
-    #                 webhook_url=f'{webhook_domain}/{config.TOKEN}'                    
+    #                 webhook_url=f'{webhook_domain}/{config.TOKEN}',
+    #                 cert='/etc/ssl/cert-selfsigned/url_cert.pem',
+    #                 key='/etc/ssl/cert-selfsigned/url_private.key'               
     #                 )
 
 
+    # ssl_certificate /etc/ssl/cert-selfsigned/url_cert.pem;
+    # ssl_certificate_key /etc/ssl/cert-selfsigned/url_private.key;
+
     # mybot.bot.set_webhook(f'{webhook_domain}/{config.TOKEN}')
+    
     mybot.start_polling()
     mybot.idle()
 
