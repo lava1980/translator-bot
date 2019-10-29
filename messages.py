@@ -1,0 +1,1 @@
+message_select_lang_of_speech = 'Please select the language of speech recognition'

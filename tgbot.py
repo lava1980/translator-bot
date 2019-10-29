@@ -11,19 +11,35 @@ from telegram.ext import messagequeue as mq
 import config
 # 
 # from handlers import *
+import google_utils
+from handlers import *
+from messages import *
 import utils
 
 
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(funcName)s - %(message)s',
                     level = logging.INFO,
-                    filename = 'tgbot.log'
+                    filename = 'bot.log'
                     )
 
 
     
 
+def add_group(update, context):
 
+    for member in update.message.new_chat_members:
+        update.message.reply_text(message_select_lang_of_speech, reply_markup=utils.get_button_start(update, context))
+        # print(update.message.chat_id)
+
+
+
+
+def test_keyboard(update, context):
+    # Узнать message_id этого сообщения, и закинуть его в контекст
+    update.message.reply_text(
+        message_select_lang_of_speech, 
+        reply_markup=utils.get_button_start(update, context))
 
 
 
@@ -42,10 +58,11 @@ def main():
     dp = mybot.dispatcher
     
 
-    
-  
-    dp.add_handler(MessageHandler(Filters.voice, utils.voice_to_text))  
-    dp.add_error_handler(utils.ping_me)
+    dp.add_handler(CallbackQueryHandler(serf_menu))
+    dp.add_handler(MessageHandler(Filters.status_update.new_chat_members, add_group))  
+    dp.add_handler(MessageHandler(Filters.voice, google_utils.voice_to_text))  
+    dp.add_error_handler(google_utils.ping_me)
+    dp.add_handler(CommandHandler('kb', test_keyboard))
     # dp.add_handler(CallbackQueryHandler(set_delay, pattern='no'))   
     # dp.add_handler(CommandHandler('start', check_if_is_subscriber))      
     # dp.add_handler(CommandHandler('now', send_resume))    

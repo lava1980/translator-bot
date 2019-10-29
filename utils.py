@@ -1,86 +1,26 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-from telegram.ext.dispatcher import run_async
-
-# from __future__ import unicode_literals
-from telegram import ChatAction
-from tinytag import TinyTag 
-from google.cloud import speech
-# from google.cloud import storage
-from google.cloud.speech import enums
-from google.cloud import translate
-from google.cloud.speech import types
-import os
-import io
+import datetime
+import locale
 import logging
+import random
+import requests
+import sqlite3
+from telegram import ChatAction, InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
 
-from config import *
+import time
 
+from config import languages
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(funcName)s - %(message)s',
                     level = logging.INFO,
-                    filename = 'tgbot.log'
+                    filename = 'bot.log'
                     )
 
 
-
-
-@run_async
-def voice_to_text(update, context):
-    chat_id = update.message.chat.id
-    file_name = str(chat_id) + '_' + str(update.message.from_user.id) + str(update.message.message_id) + '.ogg'
-
-    update.message.voice.get_file().download(file_name)
-    tag = TinyTag.get(file_name)
-    
-    speech_client = speech.SpeechClient()
-
-    with io.open(file_name, 'rb') as audio_file:
-        content = audio_file.read()
-        audio = types.RecognitionAudio(content=content)
-
-    config = types.RecognitionConfig(
-        encoding=enums.RecognitionConfig.AudioEncoding.OGG_OPUS,
-        sample_rate_hertz=tag.samplerate,
-        language_code='ru-RU')
-
-    context.bot.send_chat_action(chat_id=chat_id, action=ChatAction.TYPING)
-    response = speech_client.long_running_recognize(config, audio).result(timeout=500) \
-        # if to_gs else \
-        # speech_client.recognize(config, audio)
-    
-    message_text = ''
-    for result in response.results:
-        message_text += result.alternatives[0].transcript + '\n'
-
-    
-    message_text = transl(message_text.encode('utf-8'), 'en')
-
-    update.message.reply_text(message_text)
-    os.remove(os.getcwd() + '/' + file_name)
-    
-
-
-
-
-def transl(user_text, target_lang):
-    # Instantiates a client
-    translate_client = translate.Client()
-
-    # The text to translate
-    
-    text = user_text.decode('utf-8')
-    # The target language
-    target = target_lang
-
-    # Translates some text into Russian
-    translation = translate_client.translate(
-        text,
-        target_language=target)
-
-    # print(u'Text: {}'.format(text))
-    # print(u'Translation: {}'.format(translation['translatedText']))
-    return translation['translatedText']
+def lang_list_keyboard():
+    inlinekeyboard = [[InlineKeyboardButton('English', callback_data=config.languages['English']),
+                        InlineKeyboardButton('Меня пригласили', callback_data='invited_user')]]
+    kbd_markup = InlineKeyboardMarkup(inlinekeyboard)
+    return kbd_markup
 
 
 
@@ -92,10 +32,56 @@ def transl(user_text, target_lang):
 
 
 
-def ping_me(update, context, error):
-    if not error.message == 'Timed out':
-        context.bot.send_message(chat_id=ADMIN_CHAT_ID, text=error.message)
+def build_menu(buttons,
+               n_cols,
+               header_buttons=None,
+               footer_buttons=None):
+    menu = [buttons[i:i + n_cols] for i in range(0, len(buttons), n_cols)]
+    if header_buttons:
+        menu.insert(0, [header_buttons])
+    if footer_buttons:
+        menu.append([footer_buttons])
+    return menu
+
+
+
+def get_button_start(update, context):
+    button_list = [        
+        InlineKeyboardButton('>', callback_data='1'),
+
+        InlineKeyboardButton('English', callback_data=languages['English']),
+        InlineKeyboardButton('Russian', callback_data=languages['Russian']),
+        InlineKeyboardButton('Polish', callback_data=languages['Polish']),
+        InlineKeyboardButton('Bulgarian', callback_data=languages['Bulgarian'])
+    ]
+    reply_markup = InlineKeyboardMarkup(build_menu(button_list, n_cols=2))
+    return reply_markup
+
+
+def get_button_list_1(update, context):
+    button_list = [
+        InlineKeyboardButton('<', callback_data='1'),
+        InlineKeyboardButton('>', callback_data='2'),
+
+        InlineKeyboardButton('jlkjjk', callback_data=languages['English']),
+        InlineKeyboardButton('kkljlj', callback_data=languages['Russian']),
+        InlineKeyboardButton('Pwwww', callback_data=languages['Polish']),
+        InlineKeyboardButton('ccccc', callback_data=languages['Bulgarian'])
+    ]
+    reply_markup = InlineKeyboardMarkup(build_menu(button_list, n_cols=2))
+    return reply_markup
 
 
 if __name__ == "__main__":
-    transl('ru')
+    pass
+
+
+
+
+
+
+
+
+
+
+
