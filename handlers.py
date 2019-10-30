@@ -43,6 +43,19 @@ def start_message(update, context):
 
 
 
+
+def is_voice_or_text(update, context):
+    if update.message.voice == None:
+        try:
+            native_lang = context.user_data['native_lang']            
+            native_lang = native_lang.split('-')[0]
+        except KeyError:
+            return
+        google_utils.transl(update.message.text, native_lang)
+    else:
+        google_utils.voice_to_text(update, context)
+
+
 # TODO Сделать, чтобы данные юзера подгружались при его контакте с ботом
 # TODO Записать инфу в базу
 

@@ -170,6 +170,7 @@ def lang_menu(update, context):
     for lang in l_list:
         if query.data == lang[1]:
             context.user_data['native_lang'] = query.data
+            context.chat_data['native_lang'] = query.data
             write_entry_to_base('native_lang', query.data, query.message.chat_id) 
 
             context.bot.send_chat_action(chat_id=query.message.chat_id, action=ChatAction.TYPING)        
