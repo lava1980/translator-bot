@@ -12,20 +12,77 @@ import config
 # 
 # from handlers import *
 import google_utils
+
+from keyboard import *
 from messages import *
 import utils
 
 
 
 
-def serf_menu(update, context):
+def lang_menu(update, context):
     query = update.callback_query
-    if query.data == '1':
-        context.bot.delete_message(update.message.chat_id, update.message.message_id)
-        query.message.reply_text(
-            message_select_lang_of_speech, 
-            reply_markup=utils.get_button_list_1(update, context))
+    if query.data == '1':                
+        context.bot.edit_message_text(
+            chat_id=query.message.chat_id,
+            message_id=query.message.message_id,
+            text=message_select_lang_of_speech,
+            reply_markup=get_button_list_1(update, context)
+        )
 
+
+    if query.data == '2':
+        context.bot.edit_message_text(
+            chat_id=query.message.chat_id,
+            message_id=query.message.message_id,
+            text=message_select_lang_of_speech,
+            reply_markup=get_button_list_2(update, context)
+        )        
+        
+
+    if query.data == '3':
+        context.bot.edit_message_text(
+            chat_id=query.message.chat_id,
+            message_id=query.message.message_id,
+            text=message_select_lang_of_speech,
+            reply_markup=get_button_list_3(update, context)
+        )        
+
+
+    if query.data == '4':
+        context.bot.edit_message_text(
+            chat_id=query.message.chat_id,
+            message_id=query.message.message_id,
+            text=message_select_lang_of_speech,
+            reply_markup=get_button_list_4(update, context)
+        )        
+
+
+    if query.data == '5':
+        context.bot.edit_message_text(
+            chat_id=query.message.chat_id,
+            message_id=query.message.message_id,
+            text=message_select_lang_of_speech,
+            reply_markup=get_button_list_5(update, context)
+        )        
+
+
+    if query.data == '6':
+        context.bot.edit_message_text(
+            chat_id=query.message.chat_id,
+            message_id=query.message.message_id,
+            text=message_select_lang_of_speech,
+            reply_markup=get_button_list_6(update, context)
+        )        
+
+
+    if query.data == '7':
+        context.bot.edit_message_text(
+            chat_id=query.message.chat_id,
+            message_id=query.message.message_id,
+            text=message_select_lang_of_speech,
+            reply_markup=get_button_list_7(update, context)
+        )        
 
 
 

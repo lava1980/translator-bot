@@ -29,17 +29,19 @@ logging.basicConfig(format='%(asctime)s - %(levelname)s - %(funcName)s - %(messa
 def add_group(update, context):
 
     for member in update.message.new_chat_members:
-        update.message.reply_text(message_select_lang_of_speech, reply_markup=utils.get_button_start(update, context))
+        update.message.reply_text(message_select_lang_of_speech, reply_markup=get_button_list_1(update, context))
         # print(update.message.chat_id)
 
 
 
 
 def test_keyboard(update, context):
-    # Узнать message_id этого сообщения, и закинуть его в контекст
+    # Узнать message_id этого сообщения, и закинуть его в контекст    
     update.message.reply_text(
         message_select_lang_of_speech, 
-        reply_markup=utils.get_button_start(update, context))
+        reply_markup=get_button_list_1(update, context))
+    context.chat_data['start_msg_id'] = update.message.message_id
+    print(update.message.message_id)
 
 
 
@@ -58,7 +60,7 @@ def main():
     dp = mybot.dispatcher
     
 
-    dp.add_handler(CallbackQueryHandler(serf_menu))
+    dp.add_handler(CallbackQueryHandler(lang_menu))
     dp.add_handler(MessageHandler(Filters.status_update.new_chat_members, add_group))  
     dp.add_handler(MessageHandler(Filters.voice, google_utils.voice_to_text))  
     dp.add_error_handler(google_utils.ping_me)
