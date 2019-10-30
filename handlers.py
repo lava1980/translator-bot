@@ -25,9 +25,12 @@ def add_group(update, context):
     write_initial_data_to_base(data)
     
     for member in update.message.new_chat_members:        
-        update.message.reply_text(
-            message_select_lang_of_speech, 
-            reply_markup=get_button_list_1(update, context))
+        context.bot.send_message(
+            update.message.chat_id, message_select_lang_of_speech, reply_markup=get_button_list_1(update, context)
+            )
+        # update.message.reply_text(
+        #     message_select_lang_of_speech, 
+        #     reply_markup=get_button_list_1(update, context))
         
 
 def start_message(update, context):  
@@ -40,7 +43,8 @@ def start_message(update, context):
 
 
 
-
+# TODO Сделать, чтобы данные юзера подгружались при его контакте с ботом
+# TODO Записать инфу в базу
 
 
 if __name__ == "__main__":

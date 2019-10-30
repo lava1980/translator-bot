@@ -179,7 +179,7 @@ def lang_menu(update, context):
             return
 
 
-# TODO Записать инфу в базу
+
 
 
 

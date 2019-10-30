@@ -35,7 +35,7 @@ logging.basicConfig(format='%(asctime)s - %(levelname)s - %(funcName)s - %(messa
 @run_async
 def voice_to_text(update, context):
     chat_id = update.message.chat.id
-    file_name = str(chat_id) + '_' + str(update.message.from_user.id) + str(update.message.message_id) + '.ogg'
+    file_name = str(abs(chat_id)) + '_' + str(update.message.from_user.id) + str(update.message.message_id) + '.ogg'
 
     update.message.voice.get_file().download(file_name)
     tag = TinyTag.get(file_name)
@@ -79,8 +79,7 @@ def transl(user_text, target_lang):
     # The text to translate
     if isinstance(user_text, str) == False:        
         user_text = user_text.decode('utf-8')
-    # The target language
-    
+    # The target language   
 
     # Translates some text into Russian    
     translation = translate_client.translate(
