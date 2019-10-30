@@ -1,6 +1,8 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
 from config import buttons_pages, languages
+from messages import *
+from utils import write_entry_to_base
 
 
 
@@ -95,3 +97,90 @@ def get_button_list_7(update, context):
     reply_markup = InlineKeyboardMarkup(menu)
     return reply_markup
 
+
+"""БЛОК ОБРАБОТЧИКОВ КЛАВИАТУРЫ"""
+
+
+def lang_menu(update, context):
+    query = update.callback_query
+    if query.data == '1':        
+        context.bot.edit_message_text(
+            chat_id=query.message.chat_id,
+            message_id=query.message.message_id,
+            text=message_select_lang_of_speech,
+            reply_markup=get_button_list_1(update, context)
+        )
+
+
+    if query.data == '2':
+        context.bot.edit_message_text(
+            chat_id=query.message.chat_id,
+            message_id=query.message.message_id,
+            text=message_select_lang_of_speech,
+            reply_markup=get_button_list_2(update, context)
+        )        
+        
+
+    if query.data == '3':
+        context.bot.edit_message_text(
+            chat_id=query.message.chat_id,
+            message_id=query.message.message_id,
+            text=message_select_lang_of_speech,
+            reply_markup=get_button_list_3(update, context)
+        )        
+
+
+    if query.data == '4':
+        context.bot.edit_message_text(
+            chat_id=query.message.chat_id,
+            message_id=query.message.message_id,
+            text=message_select_lang_of_speech,
+            reply_markup=get_button_list_4(update, context)
+        )        
+
+
+    if query.data == '5':
+        context.bot.edit_message_text(
+            chat_id=query.message.chat_id,
+            message_id=query.message.message_id,
+            text=message_select_lang_of_speech,
+            reply_markup=get_button_list_5(update, context)
+        )        
+
+
+    if query.data == '6':
+        context.bot.edit_message_text(
+            chat_id=query.message.chat_id,
+            message_id=query.message.message_id,
+            text=message_select_lang_of_speech,
+            reply_markup=get_button_list_6(update, context)
+        )        
+
+
+    if query.data == '7':
+        context.bot.edit_message_text(
+            chat_id=query.message.chat_id,
+            message_id=query.message.message_id,
+            text=message_select_lang_of_speech,
+            reply_markup=get_button_list_7(update, context)
+        )    
+    
+    l_list = list(languages.items())
+    for lang in l_list:
+        if query.data == lang[1]:
+            write_entry_to_base('native_lang', query.data, query.message.chat_id)
+            query.message.reply_text('Вы выбрали ' + lang[0])
+            return
+
+
+# TODO Записать инфу в базу
+# TODO После выбора языка распознавания послать сообщение.
+
+
+
+
+
+
+
+if __name__ == "__main__":
+    pass

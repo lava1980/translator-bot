@@ -9,5 +9,6 @@ audio/
 tmp*.*
 529133*
 lang_list.txt
+*.db
 
 
