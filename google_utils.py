@@ -86,8 +86,8 @@ def transl(user_text, target_lang):
         user_text,
         target_language=target_lang)
 
-    print(u'Text: {}'.format(user_text))
-    print(u'Translation: {}'.format(translation['translatedText']))
+    # print(u'Text: {}'.format(user_text))
+    # print(u'Translation: {}'.format(translation['translatedText']))
     return translation['translatedText']
 
 

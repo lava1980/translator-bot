@@ -108,7 +108,7 @@ def lang_menu(update, context):
         context.bot.edit_message_text(
             chat_id=query.message.chat_id,
             message_id=query.message.message_id,
-            text=message_select_lang_of_speech,
+            text=msg_select_lang_of_speech,
             reply_markup=get_button_list_1(update, context)
         )
 
@@ -117,7 +117,7 @@ def lang_menu(update, context):
         context.bot.edit_message_text(
             chat_id=query.message.chat_id,
             message_id=query.message.message_id,
-            text=message_select_lang_of_speech,
+            text=msg_select_lang_of_speech,
             reply_markup=get_button_list_2(update, context)
         )        
         
@@ -126,7 +126,7 @@ def lang_menu(update, context):
         context.bot.edit_message_text(
             chat_id=query.message.chat_id,
             message_id=query.message.message_id,
-            text=message_select_lang_of_speech,
+            text=msg_select_lang_of_speech,
             reply_markup=get_button_list_3(update, context)
         )        
 
@@ -135,7 +135,7 @@ def lang_menu(update, context):
         context.bot.edit_message_text(
             chat_id=query.message.chat_id,
             message_id=query.message.message_id,
-            text=message_select_lang_of_speech,
+            text=msg_select_lang_of_speech,
             reply_markup=get_button_list_4(update, context)
         )        
 
@@ -144,7 +144,7 @@ def lang_menu(update, context):
         context.bot.edit_message_text(
             chat_id=query.message.chat_id,
             message_id=query.message.message_id,
-            text=message_select_lang_of_speech,
+            text=msg_select_lang_of_speech,
             reply_markup=get_button_list_5(update, context)
         )        
 
@@ -153,7 +153,7 @@ def lang_menu(update, context):
         context.bot.edit_message_text(
             chat_id=query.message.chat_id,
             message_id=query.message.message_id,
-            text=message_select_lang_of_speech,
+            text=msg_select_lang_of_speech,
             reply_markup=get_button_list_6(update, context)
         )        
 
@@ -162,7 +162,7 @@ def lang_menu(update, context):
         context.bot.edit_message_text(
             chat_id=query.message.chat_id,
             message_id=query.message.message_id,
-            text=message_select_lang_of_speech,
+            text=msg_select_lang_of_speech,
             reply_markup=get_button_list_7(update, context)
         )    
     
@@ -175,7 +175,7 @@ def lang_menu(update, context):
 
             context.bot.send_chat_action(chat_id=query.message.chat_id, action=ChatAction.TYPING)        
             query.message.reply_text(
-                transl(m_select_lang_ok, query.data.split('-')[0])                
+                transl(msg_select_lang_ok, query.data.split('-')[0])                
                 )
             return
 
