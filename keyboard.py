@@ -176,8 +176,8 @@ def lang_menu(update, context):
     l_list = list(languages.items())
     for lang in l_list:
         if query.data == lang[1]:                        
-            # Возможно, добавить все эти данные в context.chat_data
-            context.chat_data['native_lang'] = query.data
+            # Возможно, добавить все эти данные в context.user_data
+            context.user_data['native_lang'] = query.data
             user_id = query.from_user.id
             first_name = query.from_user.first_name
             data = (user_id, first_name, query.data)

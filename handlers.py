@@ -28,7 +28,7 @@ def add_group(update, context):
         if member.is_bot:
             logging.info(f'ЭТО БОТ: id пользователя = {str(member.id)}')
             logging.info(f'ЭТО БОТ: имя пользователя = {str(member.first_name)}')
-            context.chat_data['group_chat_id'] = update.message.chat_id
+            context.user_data['group_chat_id'] = update.message.chat_id
             context.bot.send_message(
                 update.message.chat_id, 
                 msg_select_lang_of_speech, 
@@ -44,17 +44,23 @@ def start_message(update, context):
         reply_markup=get_button_list_1(update, context))    
 
 
-def is_voice_or_text(update, context):    
-    if 'native_lang' not in context.chat_data:
-        native_lang = get_data_cell('native_lang', str(update.message.from_user.id))  
-        context.chat_data['native_lang'] = native_lang
-        logging.info(f'Из базы вытянулось значение родного языка = {native_lang}')
-    else:
-        native_lang = context.chat_data['native_lang']
+def is_voice_or_text(update, context):  
+    user_id = str(update.message.from_user.id)
+    try:
+        native_lang = data_to_context('native_lang', user_id, context)  
+    except TypeError:
+        start_message(update, context)
+        return
         
-    if update.message.voice == None:
-  
-        native_lang = native_lang.split('-')[0]           
+    if update.message.voice == None: 
+        logging.info(
+            f'{update.message.from_user.id}:{update.message.from_user.first_name}:{native_lang}')
+
+
+
+
+
+        native_lang_t = native_lang.split('-')[0]           
             
         tr_text = google_utils.transl(update.message.text, 'en')
         update.message.reply_text(tr_text)

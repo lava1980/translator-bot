@@ -82,16 +82,14 @@ sum_to_save_in_this_month, role FROM users WHERE user_id=?',
     return date_list[0]
 
 
-def get_user_data(update, context):        
-    if 'user_id' not in context.chat_data:
-        context.chat_data['user_id'] = update.message.from_user.id
-        context.chat_data['first_name'] = update.message.from_user.first_name
-        user_list = list_from_base_column('user_id')
-        for user in user_list:
-            pass
-    if ('user_id' and 'first_name' and 'native_lang') in context.chat_data:
-        pass
-
+def data_to_context(data, user_id, context):        
+    if data not in context.user_data:
+        data_from_base = get_data_cell(data, user_id)  
+        context.user_data[data] = data_from_base
+        logging.info(f'Из базы вытянулось значение = {data_from_base}')        
+    else:
+        data_from_base = context.user_data[data]
+    return data_from_base
         
     
 

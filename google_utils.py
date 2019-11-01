@@ -46,7 +46,7 @@ def voice_to_text(update, context):
         content = audio_file.read()
         audio = types.RecognitionAudio(content=content)
 
-    native_lang = context.chat_data['native_lang']
+    native_lang = context.user_data['native_lang']
     logging.info(f'Родной язык из контекста подтянулся такой: {str(native_lang)}')
 
     config = types.RecognitionConfig(
