@@ -9,6 +9,7 @@ from telegram import ChatAction, InlineKeyboardButton, InlineKeyboardMarkup, Par
 import time
 
 from config import *
+# from handlers import start_message
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(funcName)s - %(message)s',
                     level = logging.INFO,
@@ -23,24 +24,17 @@ def create_user_base():
     conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
     cursor.execute('''CREATE TABLE IF NOT EXISTS users
-                    (chat_id text PRIMARY KEY, first_name text, native_lang text, 
+                    (user_id text PRIMARY KEY, first_name text, native_lang text, 
                     output_voice_or_text text)'''
                     )
     conn.commit()
     conn.close()
 
 
-def get_initial_data(update):    
-    chat_id = update.message.chat_id
-    first_name = update.message.chat.first_name
-    initial_user_data = (chat_id, first_name)
-    return initial_user_data
-
-
-def write_initial_data_to_base(data):
+def write_data_to_base(data):
     conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
-    cursor.execute('INSERT OR IGNORE INTO users (chat_id, first_name) VALUES (?, ?)', data)
+    cursor.execute('INSERT OR IGNORE INTO users (user_id, first_name, native_lang) VALUES (?, ?, ?)', data)
     conn.commit()
     conn.close()
 
@@ -48,7 +42,7 @@ def write_initial_data_to_base(data):
 def write_entry_to_base(column, entry, id):
     conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
-    cursor.execute(f'UPDATE users SET {column}=? WHERE chat_id=?', (entry, id))
+    cursor.execute(f'UPDATE users SET {column}=? WHERE user_id=?', (entry, id))
     conn.commit()
     conn.close()
 
@@ -63,30 +57,56 @@ def list_from_base_column(column): # Возвращает список знач�
     return column_list # [('-yGIB7rf?NKU0Dk',), (None,)]
 
 
-def get_data_cell(column, chat_id):
+def get_data_cell(column, user_id):
     conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
-    cursor.execute(f'SELECT {column} FROM users WHERE chat_id=?', (chat_id,))
+    cursor.execute(f'SELECT {column} FROM users WHERE user_id=?', (user_id,))
     date_list = cursor.fetchone()
     conn.commit()
     conn.close()
     return date_list[0]
 
 
-def select_user_data(chat_id):
+def select_user_data(user_id):
     conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
     cursor.execute(
         f'SELECT purpose, purpose_type, purpose_sum, purpose_date, current_sum, \
 payday_dates, secret_key, purp_currency, save_in_this_month, \
-sum_to_save_in_this_month, role FROM users WHERE chat_id=?',
-        (chat_id,))
+sum_to_save_in_this_month, role FROM users WHERE user_id=?',
+        (user_id,))
     date_list = cursor.fetchall()
     conn.commit()
     conn.close()
     # print(date_list[0])   
     return date_list[0]
 
+
+def get_user_data(update, context):        
+    if 'user_id' not in context.chat_data:
+        context.chat_data['user_id'] = update.message.from_user.id
+        context.chat_data['first_name'] = update.message.from_user.first_name
+        user_list = list_from_base_column('user_id')
+        for user in user_list:
+            pass
+    if ('user_id' and 'first_name' and 'native_lang') in context.chat_data:
+        pass
+
+        
+    
+
+    
+# Для чего мне делать все эти проверки? Надо доставать данные из базы или нет. 
+
+# Если данные и так есть, то нахрена лишний раз дёргать базу? 
+
+
+
+
+
+# Проверить или родной язык есть в контексте
+# Проверить или есть в айди в базе
+# если нет, записать в базу
 
 
 

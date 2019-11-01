@@ -53,7 +53,7 @@ def main():
 
     dp.add_handler(CallbackQueryHandler(lang_menu))
 
-    # TODO Убедиться, что срабатывает только при добавлении бота
+    
     dp.add_handler(MessageHandler(Filters.status_update.new_chat_members, add_group))  
     dp.add_handler(MessageHandler(Filters.voice, google_utils.voice_to_text))  
 
@@ -62,7 +62,7 @@ def main():
     dp.add_handler(CommandHandler('start', start_message))
     dp.add_handler(CommandHandler('help', help_message))
     dp.add_handler(MessageHandler(Filters.text, is_voice_or_text))  
-    dp.add_handler(MessageHandler(Filters.group, is_voice_or_text))  
+    # dp.add_handler(MessageHandler(Filters.group, is_voice_or_text))  
 
 
     # webhook_domain = 'https://translatebot.ru'    

@@ -1,10 +1,17 @@
+import logging
 from telegram import ChatAction, InlineKeyboardButton, InlineKeyboardMarkup
 
 from config import buttons_pages, languages
 from google_utils import transl
 from messages import *
-from utils import write_entry_to_base
+from utils import write_data_to_base
 
+
+
+logging.basicConfig(format='%(asctime)s - %(levelname)s - %(funcName)s - %(message)s',
+                    level = logging.INFO,
+                    filename = 'bot.log'
+                    )
 
 
 
@@ -168,12 +175,16 @@ def lang_menu(update, context):
     
     l_list = list(languages.items())
     for lang in l_list:
-        if query.data == lang[1]:
-            context.user_data['native_lang'] = query.data
+        if query.data == lang[1]:                        
+            # Возможно, добавить все эти данные в context.chat_data
             context.chat_data['native_lang'] = query.data
-            write_entry_to_base('native_lang', query.data, query.message.chat_id) 
+            user_id = query.from_user.id
+            first_name = query.from_user.first_name
+            data = (user_id, first_name, query.data)
+            write_data_to_base(data)
 
-            context.bot.send_chat_action(chat_id=query.message.chat_id, action=ChatAction.TYPING)        
+            context.bot.send_chat_action(
+                chat_id=query.message.chat_id, action=ChatAction.TYPING)        
             query.message.reply_text(
                 transl(msg_select_lang_ok, query.data.split('-')[0])                
                 )
