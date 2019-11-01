@@ -4,7 +4,8 @@ from telegram import ChatAction, InlineKeyboardButton, InlineKeyboardMarkup
 from config import buttons_pages, languages
 from google_utils import transl
 from messages import *
-from utils import write_data_to_base
+from utils import write_data_to_base, write_initial_data_to_group_table, \
+    get_cell_group
 
 
 
@@ -181,7 +182,28 @@ def lang_menu(update, context):
             user_id = query.from_user.id
             first_name = query.from_user.first_name
             data = (user_id, first_name, query.data)
-            write_data_to_base(data)
+            write_data_to_base(data)            
+
+
+            
+
+
+# Что надо сделать? что мне надо сделать? Надо слать сообщения юзеру... надо 
+# понимать, что у него за родной язык
+# Вот чел что-то сказал в чате... его данные записались в базу 
+# есть база... есть два человека. У каждого есть свой чат-айди
+# Первый человек прислал сообщение. Бот смотрит язык второго, и подставляет его в нужное место.
+# 
+# Вопрос в том, как посмотреть язык второго                    
+
+
+            
+
+
+            # Добавляем в базу id группы
+            write_initial_data_to_group_table(
+                (query.message.chat_id,)
+            )           
 
             context.bot.send_chat_action(
                 chat_id=query.message.chat_id, action=ChatAction.TYPING)        

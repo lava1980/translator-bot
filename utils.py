@@ -25,8 +25,14 @@ def create_user_base():
     cursor = conn.cursor()
     cursor.execute('''CREATE TABLE IF NOT EXISTS users
                     (user_id text PRIMARY KEY, first_name text, native_lang text, 
-                    output_voice_or_text text)'''
+                    output_voice_or_text text)
+                    '''
                     )
+    cursor.execute('''CREATE TABLE IF NOT EXISTS groups
+                    (group_id text PRIMARY KEY, user_ids text)         
+                   '''
+                    )
+
     conn.commit()
     conn.close()
 
@@ -39,10 +45,26 @@ def write_data_to_base(data):
     conn.close()
 
 
+def write_initial_data_to_group_table(data):
+    conn = sqlite3.connect('users.db')
+    cursor = conn.cursor()
+    cursor.execute('INSERT OR IGNORE INTO groups (group_id) VALUES (?)', data)
+    conn.commit()
+    conn.close()
+
+
 def write_entry_to_base(column, entry, id):
     conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
     cursor.execute(f'UPDATE users SET {column}=? WHERE user_id=?', (entry, id))
+    conn.commit()
+    conn.close()
+
+
+def write_entry_to_group_table(column, entry, group_id):
+    conn = sqlite3.connect('users.db')
+    cursor = conn.cursor()
+    cursor.execute(f'UPDATE groups SET {column}=? WHERE group_id=?', (entry, group_id))
     conn.commit()
     conn.close()
 
@@ -66,6 +88,16 @@ def get_data_cell(column, user_id):
     conn.close()
     return date_list[0]
 
+    
+def get_cell_group(column, group_id):
+    conn = sqlite3.connect('users.db')
+    cursor = conn.cursor()
+    cursor.execute(f'SELECT {column} FROM groups WHERE group_id=?', (group_id,))
+    date_list = cursor.fetchone()
+    conn.commit()
+    conn.close()
+    return date_list[0]
+
 
 def select_user_data(user_id):
     conn = sqlite3.connect('users.db')
@@ -82,21 +114,21 @@ sum_to_save_in_this_month, role FROM users WHERE user_id=?',
     return date_list[0]
 
 
+def get_chat_users_list(chat_id):
+    id_list = get_cell_group('user_ids', chat_id)
+    if id_list == None:
+        pass
+    else:            
+        return id_list.split(', ')
+       
         
-    
 
-    
-# Для чего мне делать все эти проверки? Надо доставать данные из базы или нет. 
+        
+        
+# Нужно присвоить ему номер, например, user_id_1 и сохранить в чат-дата
+# Вытянуть из базы родной язык и добавить его в чат-дата
+# Должно получить так: 12123321: en-ENG, что-то в этом роде
 
-# Если данные и так есть, то нахрена лишний раз дёргать базу? 
-
-
-
-
-
-# Проверить или родной язык есть в контексте
-# Проверить или есть в айди в базе
-# если нет, записать в базу
 
 
 
@@ -114,7 +146,7 @@ def lang_list_to_file(texttt):
 
 
 if __name__ == "__main__":
-    pass
+    get_chat_users_list('-1001289318869')
     
 
 
