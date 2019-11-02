@@ -5,7 +5,7 @@ from config import buttons_pages, languages
 from google_utils import transl
 from messages import *
 from utils import write_data_to_base, write_initial_data_to_group_table, \
-    get_cell_group, write_ids_to_base
+    get_cell_group, write_ids_to_base, handle_text
 
 
 
@@ -194,10 +194,9 @@ def lang_menu(update, context):
             write_ids_to_base(str(user_id), query.message.chat_id)      
 
             context.bot.send_chat_action(
-                chat_id=query.message.chat_id, action=ChatAction.TYPING)        
-            query.message.reply_text(
-                transl(msg_select_lang_ok, query.data.split('-')[0])                
-                )
+                chat_id=query.message.chat_id, action=ChatAction.TYPING)     
+            text_msg = transl(msg_select_lang_ok, query.data.split('-')[0])
+            query.message.reply_text(handle_text(text_msg))
             return
 
 

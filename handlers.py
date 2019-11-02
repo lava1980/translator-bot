@@ -72,9 +72,8 @@ def is_voice_or_text(update, context):
 
 def help_message(update, context):
     add_chat_data_to_context(update, context)
-    native_lang = context.chat_data[str(update.message.from_user.id)]
-    text = google_utils.transl(msg_help, native_lang)
-    # text = msg_help
+    native_lang = context.chat_data[str(update.message.from_user.id)].split('-')[0]
+    text = google_utils.transl(msg_help, native_lang)    
     update.message.reply_text(handle_text(text))
 
 

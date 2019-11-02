@@ -133,9 +133,9 @@ def get_chat_users_list(chat_id):
         
 def handle_text(text):  
     if '&#39;' in text:
-        text = text.replace('&#39;', "'")    
+        text = text.replace("&#39;", "'")    
     if ' / ' in text:
-        text = text.replace(' / ', " /")  
+        text = text.replace(" / ", " /")  
     return text
 
         
