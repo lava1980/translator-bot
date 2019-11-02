@@ -141,12 +141,6 @@ def handle_text(text):
         
 
 
-
-
-
-
-
-
 def lang_list_to_file(texttt):
     with open('lang_list.txt', 'w') as f:
         string_list = texttt.split('\n')

@@ -51,16 +51,23 @@ def is_voice_or_text(update, context):
     native_lang = context.chat_data[user_id]
     context.user_data['native_lang'] = native_lang
 
+    if len(context.chat_data) == 1:
+        update.message.reply_text(msg_one_chat_member)
+        return
+
     for key in context.chat_data.keys():
         if key != user_id:
             lang = context.chat_data[key].split('-')[0]
             context.user_data['lang'] = lang
+        else:
+            continue
+        
 
-    if update.message.voice == None:      
-        tr_text = google_utils.transl(update.message.text, lang)
-        update.message.reply_text(tr_text)
-    else:
-        google_utils.voice_to_text(update, context)
+        if update.message.voice == None:      
+            tr_text = google_utils.transl(update.message.text, lang)
+            update.message.reply_text(tr_text)
+        else:
+            google_utils.voice_to_text(update, context)
 
 
 def help_message(update, context):
