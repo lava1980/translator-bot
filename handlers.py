@@ -50,13 +50,19 @@ def is_voice_or_text(update, context):
     user_id = str(update.message.from_user.id)
     add_chat_data_to_context(update, context)
     native_lang = context.chat_data[user_id]
-        
+    context.user_data['native_lang'] = native_lang
+
+
+    for key in context.chat_data.keys():
+        if key != user_id:
+            lang = context.chat_data[key].split('-')[0]
+            context.user_data['lang'] = lang
+
+
+
     if update.message.voice == None: 
 
         
-        for key in context.chat_data.keys():
-            if key != user_id:
-                lang = context.chat_data[key].split('-')[0]
 
             
         tr_text = google_utils.transl(update.message.text, lang)

@@ -56,12 +56,14 @@ def main():
 
     
     dp.add_handler(MessageHandler(Filters.status_update.new_chat_members, add_group))  
-    dp.add_handler(MessageHandler(Filters.voice, google_utils.voice_to_text))  
+    # dp.add_handler(MessageHandler(Filters.voice, google_utils.voice_to_text))  
+    dp.add_handler(MessageHandler(Filters.voice, is_voice_or_text))  
 
     
     dp.add_error_handler(google_utils.ping_me)
     dp.add_handler(CommandHandler('start', start_message))
     dp.add_handler(CommandHandler('help', help_message))
+    dp.add_handler(CommandHandler('lang', start_message))
     dp.add_handler(MessageHandler(Filters.text, is_voice_or_text))  
     # dp.add_handler(MessageHandler(Filters.group, is_voice_or_text))  
 

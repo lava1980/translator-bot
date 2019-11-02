@@ -63,8 +63,8 @@ def voice_to_text(update, context):
     for result in response.results:
         message_text += result.alternatives[0].transcript + '\n'
 
-    
-    message_text = transl(message_text.encode('utf-8'), 'en')
+    lang = context.user_data['lang']
+    message_text = transl(message_text.encode('utf-8'), lang)
 
     update.message.reply_text(message_text)
     os.remove(os.getcwd() + '/' + file_name)
