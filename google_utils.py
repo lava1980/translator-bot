@@ -8,8 +8,10 @@ from tinytag import TinyTag
 from google.cloud import speech
 # from google.cloud import storage
 from google.cloud.speech import enums
-from google.cloud import translate_v2
 from google.cloud.speech import types
+from google.cloud import texttospeech # pip install google-cloud-texttospeech
+from google.cloud import translate_v2
+
 import os
 import io
 import logging
@@ -22,13 +24,6 @@ logging.basicConfig(format='%(asctime)s - %(levelname)s - %(funcName)s - %(messa
                     level = logging.INFO,
                     filename = 'bot.log'
                     )
-
-
-
-
-
-
-
 
 
 
@@ -71,9 +66,6 @@ def voice_to_text(update, context):
     os.remove(os.getcwd() + '/' + file_name)
     
 
-
-
-
 def transl(user_text, target_lang):
     # Instantiates a client
     translate_client = translate_v2.Client()
@@ -90,13 +82,32 @@ def transl(user_text, target_lang):
     return translation['translatedText']
 
 
+def text_to_voice(text, lang):
+    # Instantiates a client
+    client = texttospeech.TextToSpeechClient()
 
+    # Set the text input to be synthesized
+    synthesis_input = texttospeech.types.SynthesisInput(text=text)
 
+    # Build the voice request, select the language code ("en-US") and the ssml
+    # voice gender ("neutral")
+    voice = texttospeech.types.VoiceSelectionParams(
+        language_code=lang,
+        ssml_gender=texttospeech.enums.SsmlVoiceGender.NEUTRAL)
 
+    # Select the type of audio file you want returned
+    audio_config = texttospeech.types.AudioConfig(
+        audio_encoding=texttospeech.enums.AudioEncoding.OGG_OPUS)
 
+    # Perform the text-to-speech request on the text input with the selected
+    # voice parameters and audio file type
+    response = client.synthesize_speech(synthesis_input, voice, audio_config)
 
-
-
+    # The response's audio_content is binary.
+    with open('output.ogg', 'wb') as out:
+        # Write the response to the output file.
+        out.write(response.audio_content)
+        print('Audio content written to file "output.ogg"')
 
 
 def ping_me(update, context, error):
@@ -105,4 +116,6 @@ def ping_me(update, context, error):
 
 
 if __name__ == "__main__":
-    transl('Сообщение справки', 'en')
+    # transl('Сообщение справки', 'en')
+    # text_to_voice('иди в жопу')
+    text_to_voice('Катя хорошая девочка', 'ru-RU')
