@@ -53,7 +53,7 @@ def is_voice_or_text(update, context):
         
     if update.message.voice == None: 
 
-        # native_lang_t = native_lang.split('-')[0]   
+        
         for key in context.chat_data.keys():
             if key != user_id:
                 lang = context.chat_data[key].split('-')[0]
@@ -72,16 +72,21 @@ def help_message(update, context):
 
 # Эту функцию вызывать при начале беседы
 def add_chat_data_to_context(update, context):
-    if str(update.message.from_user.id) not in context.chat_data:
-        users_list = get_chat_users_list(update.message.chat_id)    
-        for user_id in users_list: 
-            try:       
-                native_lang = get_data_cell('native_lang', user_id)
-            except TypeError:
-                start_message(update, context)
-                continue
-            context.chat_data[user_id] = native_lang
-            logging.info(f'Из базы вытянулось значение = {native_lang}')        
+    user_id = str(update.message.from_user.id)
+    if user_id not in context.chat_data:
+        users_list = get_chat_users_list(update.message.chat_id) 
+        if user_id in users_list:
+            for user_id in users_list: 
+                try:       
+                    native_lang = get_data_cell('native_lang', user_id)
+                except TypeError:
+                    start_message(update, context)
+                    continue
+                context.chat_data[user_id] = native_lang
+                logging.info(f'Из базы вытянулось значение = {native_lang}') 
+
+        else:            
+            start_message(update, context)
             
     
 

@@ -114,6 +114,17 @@ sum_to_save_in_this_month, role FROM users WHERE user_id=?',
     return date_list[0]
 
 
+def write_ids_to_base(user_id:str, chat_id:str):
+    cell = get_cell_group('user_ids', chat_id)
+    if cell == None or cell == '':
+        write_entry_to_group_table('user_ids', user_id, chat_id)
+    else:
+        cell += ', ' + user_id
+        write_entry_to_group_table('user_ids', cell, chat_id)
+        
+
+
+
 def get_chat_users_list(chat_id):
     id_list = get_cell_group('user_ids', chat_id)
     if id_list == None:
@@ -122,12 +133,8 @@ def get_chat_users_list(chat_id):
         return id_list.split(', ')
        
         
-
+    
         
-        
-# Нужно присвоить ему номер, например, user_id_1 и сохранить в чат-дата
-# Вытянуть из базы родной язык и добавить его в чат-дата
-# Должно получить так: 12123321: en-ENG, что-то в этом роде
 
 
 
@@ -146,7 +153,8 @@ def lang_list_to_file(texttt):
 
 
 if __name__ == "__main__":
-    get_chat_users_list('-1001289318869')
+    # get_chat_users_list('-1001289318869')
+    write_ids_to_base('hjhjkhjhk', '-1001289318869')
     
 
 
