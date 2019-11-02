@@ -119,8 +119,11 @@ def write_ids_to_base(user_id:str, chat_id:str):
     if cell == None or cell == '':
         write_entry_to_group_table('user_ids', user_id, chat_id)
     else:
-        cell += ', ' + user_id
-        write_entry_to_group_table('user_ids', cell, chat_id)
+        if user_id not in cell:
+            cell += ', ' + user_id
+            write_entry_to_group_table('user_ids', cell, chat_id)
+        
+        
         
 
 def get_chat_users_list(chat_id):

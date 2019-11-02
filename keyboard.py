@@ -5,7 +5,7 @@ from config import buttons_pages, languages
 from google_utils import transl
 from messages import *
 from utils import write_data_to_base, write_initial_data_to_group_table, \
-    get_cell_group, write_ids_to_base, handle_text
+    get_cell_group, write_ids_to_base, handle_text, write_entry_to_base
 
 
 
@@ -184,7 +184,11 @@ def lang_menu(update, context):
             context.chat_data[user_id] = query.data
 
             data = (user_id, first_name, query.data)
-            write_data_to_base(data)            
+
+            if user_id not in context.chat_data:
+                write_data_to_base(data)
+            else:
+                write_entry_to_base('native_lang', query.data, str(user_id))            
 
             # Добавляем в базу id группы
             write_initial_data_to_group_table(
