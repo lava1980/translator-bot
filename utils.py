@@ -123,8 +123,6 @@ def write_ids_to_base(user_id:str, chat_id:str):
         write_entry_to_group_table('user_ids', cell, chat_id)
         
 
-
-
 def get_chat_users_list(chat_id):
     id_list = get_cell_group('user_ids', chat_id)
     if id_list == None:
@@ -133,7 +131,13 @@ def get_chat_users_list(chat_id):
         return id_list.split(', ')
        
         
-    
+def handle_text(text):  
+    if '&#39;' in text:
+        text = text.replace('&#39;', "'")    
+    if ' / ' in text:
+        text = text.replace(' / ', " /")  
+    return text
+
         
 
 
@@ -154,7 +158,8 @@ def lang_list_to_file(texttt):
 
 if __name__ == "__main__":
     # get_chat_users_list('-1001289318869')
-    write_ids_to_base('hjhjkhjhk', '-1001289318869')
+    # write_ids_to_base('hjhjkhjhk', '-1001289318869')
+    handle_text('Нажмите / hello')
     
 
 

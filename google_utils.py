@@ -15,6 +15,7 @@ import io
 import logging
 
 from config import *
+from utils import handle_text
 
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(funcName)s - %(message)s',
@@ -87,9 +88,9 @@ def transl(user_text, target_lang):
         user_text,
         target_language=target_lang)
 
-    # print(u'Text: {}'.format(user_text))
-    # print(u'Translation: {}'.format(translation['translatedText']))
-    return translation['translatedText']
+    out_text = handle_text(translation['translatedText']) 
+
+    return out_text
 
 
 

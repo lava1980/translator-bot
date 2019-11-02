@@ -45,26 +45,18 @@ def start_message(update, context):
         reply_markup=get_button_list_1(update, context))    
 
 
-def is_voice_or_text(update, context):  
-    # native_lang = data_to_context('native_lang', update, context)
+def is_voice_or_text(update, context):      
     user_id = str(update.message.from_user.id)
     add_chat_data_to_context(update, context)
     native_lang = context.chat_data[user_id]
     context.user_data['native_lang'] = native_lang
-
 
     for key in context.chat_data.keys():
         if key != user_id:
             lang = context.chat_data[key].split('-')[0]
             context.user_data['lang'] = lang
 
-
-
-    if update.message.voice == None: 
-
-        
-
-            
+    if update.message.voice == None:      
         tr_text = google_utils.transl(update.message.text, lang)
         update.message.reply_text(tr_text)
     else:
@@ -73,7 +65,8 @@ def is_voice_or_text(update, context):
 
 def help_message(update, context):
     native_lang = context.user_data['native_lang']
-    update.message.reply_text(transl(msg_help, native_lang))
+    text = transl(msg_help, native_lang)
+    update.message.reply_text(handle_text(text))
 
 
 # Эту функцию вызывать при начале беседы
