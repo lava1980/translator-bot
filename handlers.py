@@ -71,8 +71,10 @@ def is_voice_or_text(update, context):
 
 
 def help_message(update, context):
-    native_lang = context.user_data['native_lang']
-    text = transl(msg_help, native_lang)
+    add_chat_data_to_context(update, context)
+    native_lang = context.chat_data[str(update.message.from_user.id)]
+    text = google_utils.transl(msg_help, native_lang)
+    # text = msg_help
     update.message.reply_text(handle_text(text))
 
 
@@ -100,21 +102,6 @@ def add_chat_data_to_context(update, context):
 
 
 
-
-
-# def data_to_context(data, update, context):   
-#     user_id = str(update.message.from_user.id)     
-#     if data not in context.user_data:
-#         try:
-#             data_from_base = get_data_cell(data, user_id)  
-#         except TypeError:
-#             start_message(update, context)
-#             return
-#         context.user_data[data] = data_from_base
-#         logging.info(f'Из базы вытянулось значение = {data_from_base}')        
-#     else:
-#         data_from_base = context.user_data[data]
-#     return data_from_base
 
 
 

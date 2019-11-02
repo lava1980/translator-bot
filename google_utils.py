@@ -87,10 +87,9 @@ def transl(user_text, target_lang):
     translation = translate_client.translate(
         user_text,
         target_language=target_lang)
+    print(translation['translatedText'])
 
-    out_text = handle_text(translation['translatedText']) 
-
-    return out_text
+    return translation['translatedText']
 
 
 
@@ -108,4 +107,4 @@ def ping_me(update, context, error):
 
 
 if __name__ == "__main__":
-    transl(b'\xd0\xa3 \xd0\xbc\xd0\xb5\xd0\xbd\xd1\x8f \xd0\xb2\xd1\x81\xd1\x91 \xd0\xbe\xd1\x82\xd0\xbb\xd0\xb8\xd1\x87\xd0\xbd\xd0\xbe', 'en')
+    transl('Сообщение справки', 'en')
