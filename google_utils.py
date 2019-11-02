@@ -8,6 +8,7 @@ from tinytag import TinyTag
 from google.cloud import speech
 # from google.cloud import storage
 from google.cloud.speech import enums
+from google.cloud import texttospeech
 from google.cloud import translate_v2
 from google.cloud.speech import types
 import os
@@ -71,9 +72,6 @@ def voice_to_text(update, context):
     os.remove(os.getcwd() + '/' + file_name)
     
 
-
-
-
 def transl(user_text, target_lang):
     # Instantiates a client
     translate_client = translate_v2.Client()
@@ -88,8 +86,6 @@ def transl(user_text, target_lang):
         user_text,
         target_language=target_lang)
     return translation['translatedText']
-
-
 
 
 

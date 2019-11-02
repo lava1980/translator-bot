@@ -179,9 +179,12 @@ def lang_menu(update, context):
         if query.data == lang[1]:                        
             user_id = query.from_user.id
             first_name = query.from_user.first_name
-            
+                        
             context.user_data['native_lang'] = query.data
-            context.chat_data[user_id] = query.data
+            
+            if user_id not in context.chat_data or \
+                    str(user_id) not in context.chat_data:
+                context.chat_data[str(user_id)] = query.data
 
             data = (user_id, first_name, query.data)
 
@@ -196,6 +199,8 @@ def lang_menu(update, context):
             )                 
             # Добавляем id в таблицу groups (какие айди входят в каждую группу)
             write_ids_to_base(str(user_id), query.message.chat_id)      
+
+            logging.info(f'Состояние chat_data после выбора языка: {str(context.chat_data)}')
 
             context.bot.send_chat_action(
                 chat_id=query.message.chat_id, action=ChatAction.TYPING)     

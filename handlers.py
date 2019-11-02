@@ -45,7 +45,8 @@ def start_message(update, context):
         reply_markup=get_button_list_1(update, context))    
 
 
-def is_voice_or_text(update, context):      
+def is_voice_or_text(update, context):
+    logging.info(f'Состояние chat_id в самом начале функции: {str(context.chat_data)}')      
     user_id = str(update.message.from_user.id)
     add_chat_data_to_context(update, context)
     native_lang = context.chat_data[user_id]
@@ -62,7 +63,7 @@ def is_voice_or_text(update, context):
         else:
             continue
         
-
+        logging.info(f'Состояние chat_id перед отправкой сообщения: {str(context.chat_data)}')        
         if update.message.voice == None:      
             tr_text = google_utils.transl(update.message.text, lang)
             update.message.reply_text(tr_text)
@@ -80,7 +81,7 @@ def help_message(update, context):
 # Эту функцию вызывать при начале беседы
 def add_chat_data_to_context(update, context):
     user_id = str(update.message.from_user.id)
-    if user_id not in context.chat_data:
+    if user_id not in context.chat_data or int(user_id) not in context.chat_data:
         users_list = get_chat_users_list(update.message.chat_id) 
         if user_id in users_list:
             for user_id in users_list: 
@@ -98,50 +99,12 @@ def add_chat_data_to_context(update, context):
     
 
 
-
-# TODO сделать чтобы менялась дата (апдейт)
-# TODO выяснить про дублирующие сообщения
 # TODO исправить КОМАНДЫ, чтобы они не переводились на другой язык
 
-
-
-
-
-
-# TODO сделать обработчики на точки входа в общение: 
-
-# - при добавлении бота в группу: 
-# - при начале общения
-# - при начале общения напрямую в боте.
-
-
-
-# TODO Получить список участников чата
-# TODO Проверить или есть у них родной язык
-# TODO Если есть -- вытянуть, если нет -- написать сообщение в чат
-
-
-
-# TODO Человек пишет что-то в чате:
-# TODO 
-
-
-
-# TODO Сделать проверку или у собеседника выбран родной язык. Если не выбран, написать 
-# в чат сообщение на английском, чтобы выбрал
-
-
+# TODO Сделать чтобы бот реагировал на прямые сообщения в него.
 # TODO Удалять сообщение в клавиатурой, после выбора языка
 
-# TODO когда чел пишет что-то в группу, проверять, или в user_data есть его родной язык
 
-# TODO Сделать, чтобы данные юзера подгружались при его контакте с ботом
-# TODO Записать инфу в базу
-
-
-
-# Человек кидает сообщение в чат. Оно переводится на тот язык, 
-# который указан у человека в качестве родного языка. 
 
 
 
