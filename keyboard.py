@@ -1,6 +1,7 @@
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import ChatAction, InlineKeyboardButton, InlineKeyboardMarkup
 
 from config import buttons_pages, languages
+from google_utils import transl
 from messages import *
 from utils import write_entry_to_base
 
@@ -168,13 +169,17 @@ def lang_menu(update, context):
     l_list = list(languages.items())
     for lang in l_list:
         if query.data == lang[1]:
-            write_entry_to_base('native_lang', query.data, query.message.chat_id)
-            query.message.reply_text('Вы выбрали ' + lang[0])
+            context.user_data['native_lang'] = query.data
+            write_entry_to_base('native_lang', query.data, query.message.chat_id) 
+
+            context.bot.send_chat_action(chat_id=query.message.chat_id, action=ChatAction.TYPING)        
+            query.message.reply_text(
+                transl(m_select_lang_ok, query.data.split('-')[0])                
+                )
             return
 
 
 # TODO Записать инфу в базу
-# TODO После выбора языка распознавания послать сообщение.
 
 
 

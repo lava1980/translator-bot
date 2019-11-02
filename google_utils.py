@@ -46,10 +46,12 @@ def voice_to_text(update, context):
         content = audio_file.read()
         audio = types.RecognitionAudio(content=content)
 
+    native_lang = context.user_data['native_lang']
+
     config = types.RecognitionConfig(
         encoding=enums.RecognitionConfig.AudioEncoding.OGG_OPUS,
         sample_rate_hertz=tag.samplerate,
-        language_code='ru-RU')
+        language_code=native_lang)
 
     context.bot.send_chat_action(chat_id=chat_id, action=ChatAction.TYPING)
     response = speech_client.long_running_recognize(config, audio).result(timeout=500) \
@@ -75,17 +77,17 @@ def transl(user_text, target_lang):
     translate_client = translate.Client()
 
     # The text to translate
-    
-    text = user_text.decode('utf-8')
+    if isinstance(user_text, str) == False:        
+        user_text = user_text.decode('utf-8')
     # The target language
-    target = target_lang
+    
 
-    # Translates some text into Russian
+    # Translates some text into Russian    
     translation = translate_client.translate(
-        text,
-        target_language=target)
+        user_text,
+        target_language=target_lang)
 
-    print(u'Text: {}'.format(text))
+    print(u'Text: {}'.format(user_text))
     print(u'Translation: {}'.format(translation['translatedText']))
     return translation['translatedText']
 
