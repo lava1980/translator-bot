@@ -154,6 +154,10 @@ def lang_list_to_file(texttt):
             f.write(f"'{str_list[-1].split()[0]}': '{str_list[-2]}',\n")
 
 
+def get_id_list_from_chat_data(chat_data):
+    pass
+
+
 
 if __name__ == "__main__":
     # get_chat_users_list('-1001289318869')

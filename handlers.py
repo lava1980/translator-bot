@@ -57,7 +57,7 @@ def is_voice_or_text(update, context):
         update.message.reply_text(msg_one_chat_member)
         return
 
-    for key in context.chat_data.keys():
+    for key in list(context.chat_data.keys()):
         if key != user_id:
             lang = context.chat_data[key].split('-')[0]
             context.user_data['lang'] = lang
@@ -69,9 +69,7 @@ def is_voice_or_text(update, context):
         if update.message.voice == None:      
             tr_text = google_utils.transl(update.message.text, lang)
             context.user_data['user_text'] = tr_text
-            send_msg(update, context)
-
-            # update.message.reply_text(tr_text)
+            send_msg(update, context)            
         else:
             google_utils.voice_to_text(update, context)
 

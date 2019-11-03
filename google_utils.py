@@ -77,10 +77,11 @@ def transl(user_text, target_lang):
         user_text = user_text.decode('utf-8')
     # The target language   
 
-    # Translates some text into Russian    
+    # Translates some text into Russian   
+    logging.info('Значение target_lang = ' + target_lang) 
     translation = translate_client.translate(
         user_text,
-        target_language=target_lang)
+        target_language=target_lang) # lang формата ru
     return translation['translatedText']
 
 
