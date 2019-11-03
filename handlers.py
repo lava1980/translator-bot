@@ -61,6 +61,7 @@ def is_voice_or_text(update, context):
         if key != user_id:
             lang = context.chat_data[key].split('-')[0]
             context.user_data['lang'] = lang
+            context.chat_data['target_id'] = key
         else:
             continue
         
@@ -105,12 +106,14 @@ def add_chat_data_to_context(update, context):
 # Поменять местами -- чтобы я мог выбрать, получать 
 # сообщения голосом или текстом
 def send_msg(update, context):
+    target_id = context.chat_data['target_id']
     output_voice_or_text = 'text'
     output_voice_or_text = get_data_cell(
-        'output_voice_or_text', str(update.message.from_user.id))
+        'output_voice_or_text', target_id)
     
-    if output_voice_or_text == 'voice':
-        tr_text = context.user_data['user_text']
+    tr_text = context.user_data['user_text']
+
+    if output_voice_or_text == 'voice':        
         lang = context.user_data['lang']
         google_utils.text_to_voice(tr_text, lang)
         context.bot.send_voice(
