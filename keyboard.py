@@ -16,10 +16,10 @@ logging.basicConfig(format='%(asctime)s - %(levelname)s - %(funcName)s - %(messa
 
 
 
-def lang_list_keyboard():
+def output_format_keyboard():
     inlinekeyboard = [
-        [InlineKeyboardButton('English', callback_data=languages['English']),
-        InlineKeyboardButton('Меня пригласили', callback_data='invited_user')]]
+        [InlineKeyboardButton('Текстом', callback_data='text'),
+        InlineKeyboardButton('Голосом', callback_data='voice')]]
     kbd_markup = InlineKeyboardMarkup(inlinekeyboard)
     return kbd_markup
 
@@ -209,6 +209,19 @@ def lang_menu(update, context):
             return
 
 
+def output_format_handler(update, context):
+    query = update.callback_query
+    if query.data == 'text':
+        write_entry_to_base(
+            'output_voice_or_text', 
+            'text', 
+            query.from_user.id)
+    elif query.data == 'voice':
+        write_entry_to_base(
+            'output_voice_or_text', 
+            'voice', 
+            query.from_user.id)   
+    query.message.reply_text(msg_output_format_saved)     
 
 
 

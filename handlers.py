@@ -1,5 +1,6 @@
 import datetime
 import logging
+import os
 import random
 import sqlite3
 
@@ -60,13 +61,17 @@ def is_voice_or_text(update, context):
         if key != user_id:
             lang = context.chat_data[key].split('-')[0]
             context.user_data['lang'] = lang
+            context.chat_data['target_id'] = key
         else:
             continue
         
         logging.info(f'Состояние chat_id перед отправкой сообщения: {str(context.chat_data)}')        
         if update.message.voice == None:      
             tr_text = google_utils.transl(update.message.text, lang)
-            update.message.reply_text(tr_text)
+            context.user_data['user_text'] = tr_text
+            send_msg(update, context)
+
+            # update.message.reply_text(tr_text)
         else:
             google_utils.voice_to_text(update, context)
 
@@ -95,8 +100,37 @@ def add_chat_data_to_context(update, context):
 
         else:            
             start_message(update, context)
-            
+              
+
+def send_msg(update, context):
+    target_id = context.chat_data['target_id']
+    output_voice_or_text = 'text'
+    output_voice_or_text = get_data_cell(
+        'output_voice_or_text', target_id)
     
+    tr_text = context.user_data['user_text']
+
+    if output_voice_or_text == 'voice':        
+        lang = context.user_data['lang']
+        google_utils.text_to_voice(tr_text, lang)
+        context.bot.send_voice(
+            update.message.chat_id, open(os.path.join(os.getcwd(), 'output.ogg'), 'rb'))        
+        try:
+            os.remove(os.path.join(os.getcwd(), 'output.ogg'))
+        except Exception as e:
+            logging.info('Нет такого файла. Исключение: ' + str(e))
+    else:
+        update.message.reply_text(tr_text)
+
+
+def output_format(update, context):
+    update.message.reply_text(
+        msg_set_output_format, 
+        reply_markup=output_format_keyboard())       
+
+    
+
+
 
 
 # TODO исправить КОМАНДЫ, чтобы они не переводились на другой язык
