@@ -54,6 +54,8 @@ def write_initial_data_to_group_table(data):
 
 
 def write_entry_to_base(column, entry, id):
+    logging.info(
+        f'Записываем значения в базу: в столбец {column} записываем значение {entry} для {id}')
     conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
     cursor.execute(f'UPDATE users SET {column}=? WHERE user_id=?', (entry, id))

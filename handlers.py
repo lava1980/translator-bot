@@ -100,11 +100,8 @@ def add_chat_data_to_context(update, context):
 
         else:            
             start_message(update, context)
-            
-    
+              
 
-# Поменять местами -- чтобы я мог выбрать, получать 
-# сообщения голосом или текстом
 def send_msg(update, context):
     target_id = context.chat_data['target_id']
     output_voice_or_text = 'text'
@@ -125,7 +122,11 @@ def send_msg(update, context):
     else:
         update.message.reply_text(tr_text)
 
-        
+
+def output_format(update, context):
+    update.message.reply_text(
+        msg_set_output_format, 
+        reply_markup=output_format_keyboard())       
 
     
 

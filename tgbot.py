@@ -51,12 +51,11 @@ def main():
     dp = mybot.dispatcher
     
 
-
+    dp.add_handler(CallbackQueryHandler(output_format_handler, pattern='text'))
+    dp.add_handler(CallbackQueryHandler(output_format_handler, pattern='voice'))
     dp.add_handler(CallbackQueryHandler(lang_menu))
-
     
-    dp.add_handler(MessageHandler(Filters.status_update.new_chat_members, add_group))  
-    # dp.add_handler(MessageHandler(Filters.voice, google_utils.voice_to_text))  
+    dp.add_handler(MessageHandler(Filters.status_update.new_chat_members, add_group))      
     dp.add_handler(MessageHandler(Filters.voice, is_voice_or_text))  
 
     
@@ -64,6 +63,7 @@ def main():
     dp.add_handler(CommandHandler('start', start_message))
     dp.add_handler(CommandHandler('help', help_message))
     dp.add_handler(CommandHandler('lang', start_message))
+    dp.add_handler(CommandHandler('output', output_format))
     dp.add_handler(MessageHandler(Filters.text, is_voice_or_text))  
     # dp.add_handler(MessageHandler(Filters.group, is_voice_or_text))  
 
