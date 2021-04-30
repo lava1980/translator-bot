@@ -39,5 +39,5 @@ soupsieve==1.9.3
 tinytag==1.2.2
 tornado==6.0.3
 typed-ast==1.4.0
-urllib3==1.25.3
+urllib3==1.25.8
 wrapt==1.11.2
