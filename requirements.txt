@@ -33,7 +33,7 @@ pylint==2.4.3
 python-telegram-bot==12.2.0
 pytz==2019.3
 requests==2.22.0
-rsa==4.0
+rsa==4.7
 six==1.12.0
 soupsieve==1.9.3
 tinytag==1.2.2
